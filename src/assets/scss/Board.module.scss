@@ -1,0 +1,13 @@
+.board {
+	display: grid;
+	width: var(--board-width);
+	aspect-ratio: 1 / 1;
+	outline: 1px solid var(--clr-border);
+	grid-template-columns: repeat(var(--rows-count), 1fr);
+	background: var(--clr-board-bg);
+}
+
+.board-container {
+	display: flex;
+	flex-direction: column;
+}

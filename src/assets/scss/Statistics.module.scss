@@ -1,0 +1,25 @@
+.stats {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.stats-box {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 0.5rem;
+	font-weight: bold;
+	font-size: 3em;
+}
+
+.white {
+	color: white;
+}
+
+.yellow {
+	color: yellow;
+}
+
+.lightblue {
+	color: lightblue;
+}

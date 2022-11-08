@@ -1,0 +1,63 @@
+:root {
+	--circle-width: 75%;
+	--line-height: 30%;
+	--line-opacity: 0.7;
+	--clr-0: 128, 0, 128;
+	--clr-1: 255, 0, 0;
+	--clr-2: 173, 216, 230;
+	--clr-3: 255, 255, 0;
+}
+
+.tile {
+	outline: 1px solid var(--clr-border);
+	display: grid;
+	place-items: center;
+	position: relative;
+	color: rgb(var(--tile-clr));
+	&[data-color]:hover {
+		cursor: pointer;
+		&::before {
+			border: 3px solid #000;
+			z-index: 2;
+		}
+	}
+}
+
+.tile[data-color][data-populated] {
+	background-color: rgba(var(--tile-clr), var(--line-opacity));
+}
+
+.tile[data-current]::before {
+	content: "";
+	border-radius: 50%;
+	border: 3px solid #000;
+	width: calc(var(--circle-width) / 2.5);
+	aspect-ratio: 1 / 1;
+	position: absolute;
+	background-color: currentColor;
+}
+
+.tile.tile__item[data-color]::before {
+	content: "";
+	border-radius: 50%;
+	width: var(--circle-width);
+	aspect-ratio: 1 / 1;
+	position: absolute;
+	background-color: currentColor;
+}
+
+.tile[data-color="0"] {
+	--tile-clr: var(--clr-0);
+}
+
+.tile[data-color="1"] {
+	--tile-clr: var(--clr-1);
+}
+
+.tile[data-color="2"] {
+	--tile-clr: var(--clr-2);
+}
+
+.tile[data-color="3"] {
+	--tile-clr: var(--clr-3);
+}
