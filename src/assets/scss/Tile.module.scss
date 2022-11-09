@@ -6,6 +6,7 @@
 	--clr-1: 255, 0, 0;
 	--clr-2: 173, 216, 230;
 	--clr-3: 255, 255, 0;
+	--clr-4: 255, 165, 0;
 }
 
 .tile {
@@ -60,4 +61,8 @@
 
 .tile[data-color="3"] {
 	--tile-clr: var(--clr-3);
+}
+
+.tile[data-color="4"] {
+	--tile-clr: var(--clr-4);
 }

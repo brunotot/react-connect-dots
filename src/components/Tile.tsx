@@ -2,7 +2,7 @@ import { useContext } from "react";
 import styles from "./../assets/scss/Tile.module.scss";
 import { BoardContext, ColorStateConfig, updateGameStateGlobal } from "./Board";
 
-export type ColorType = undefined | 0 | 1 | 2 | 3;
+export type ColorType = undefined | 0 | 1 | 2 | 3 | 4;
 
 export type TileProps = {
 	color?: ColorType;

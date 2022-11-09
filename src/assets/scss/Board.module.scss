@@ -5,6 +5,7 @@
 	outline: 1px solid var(--clr-border);
 	grid-template-columns: repeat(var(--rows-count), 1fr);
 	background: var(--clr-board-bg);
+	max-width: 90vw;
 }
 
 .board-container {

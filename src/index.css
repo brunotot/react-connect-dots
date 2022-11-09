@@ -5,7 +5,7 @@
   --background-fallback: rgb(144, 12, 219);
   --clr-border: cyan;
   --clr-board-bg: darkblue;
-  --board-width: 700px;
+  --board-width: 50vh;
 }
 
 *,

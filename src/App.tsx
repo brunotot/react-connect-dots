@@ -1,7 +1,7 @@
-import Board from "./components/Board";
+import Game from "./components/Game";
 
 function App() {
-	return <Board rows={5} colors={4} />;
+	return <Game rows={6} colors={5} />;
 }
 
 export default App;

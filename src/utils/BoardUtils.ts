@@ -3,9 +3,10 @@ export function isNumber(str: string) {
 }
 
 export function getLargestColor(scheme: string) {
+	const schemeNormalized = scheme.replace(/\s/g, "");
 	let colorCount = 0;
-	for (let i = 0; i < scheme.length; i++) {
-		const char = scheme.charAt(i);
+	for (let i = 0; i < schemeNormalized.length; i++) {
+		const char = schemeNormalized.charAt(i);
 		if (isNumber(char)) {
 			const number = Number.parseInt(char);
 			if (number > colorCount) {

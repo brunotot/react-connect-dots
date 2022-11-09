@@ -3,10 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { BoardContext } from "./Board";
 
 export default function Statistics() {
-	const { gameState, rows, largestColor } = useContext(BoardContext);
+	const { gameState, rows, largestColor, progress, setProgress } =
+		useContext(BoardContext);
 	const colorCount = largestColor + 1;
 	const tilesCount = Math.pow(rows, 2);
-	const [progress, setProgress] = useState(0);
 	const [flows, setFlows] = useState(0);
 
 	function calculateProgress(): number {

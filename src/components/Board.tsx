@@ -1,13 +1,13 @@
-import React, { CSSProperties, useMemo, useState } from "react";
+import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import { getLargestColor, isNumber } from "../utils/BoardUtils";
 import styles from "./../assets/scss/Board.module.scss";
 import Statistics from "./Statistics";
 import Tile, { ColorType } from "./Tile";
 
 export type BoardProps = {
-	colors: number;
+	onRestart: () => void;
 	rows: number;
-	scheme?: string;
+	scheme: string;
 };
 
 export type DraggingColorType = {
@@ -17,6 +17,8 @@ export type DraggingColorType = {
 };
 
 export interface IBoardContext {
+	progress: number;
+	setProgress: (value: number) => void;
 	largestColor: number;
 	rows: number;
 	gameState: GameState;
@@ -189,15 +191,14 @@ export function updateGameStateGlobal(
 
 export default function Board(props: BoardProps) {
 	const rows = props.rows;
-	const colors = props.colors;
 	const tilesCount = Math.pow(rows, 2);
 	const tilesArray = [...Array(tilesCount)];
 	const style = { "--rows-count": rows } as CSSProperties;
-	const scheme = useMemo(() => props.scheme ?? randomizeScheme(), []);
-	const schemeSanitized = scheme.replace(/\s/g, "");
-	const largestColor = getLargestColor(schemeSanitized);
+	const scheme = props.scheme;
+	const largestColor = getLargestColor(scheme);
+	const [progress, setProgress] = useState(0);
 	const initialGameState: GameState = useMemo(
-		() => buildInitialGameState(schemeSanitized, largestColor),
+		() => buildInitialGameState(scheme, largestColor),
 		[]
 	);
 	const [gameState, setGameState] = useState(initialGameState);
@@ -207,55 +208,25 @@ export default function Board(props: BoardProps) {
 		}
 	};
 
-	function randomizeScheme(): string {
-		function removeRandom(array: number[]) {
-			const random = Math.floor(Math.random() * array.length);
-			const randomElem = array.splice(random, 1)[0];
-			return randomElem;
-		}
-
-		function getRandomScheme(): string {
-			const array = Array.from(Array(tilesCount), (_, index) => index);
-			const schemeArray = new Array(tilesCount).fill("-");
-			for (let i = 0; i < colors; i++) {
-				const randomIdxEnd1 = removeRandom(array);
-				const randomIdxEnd2 = removeRandom(array);
-				schemeArray[randomIdxEnd1] = i;
-				schemeArray[randomIdxEnd2] = i;
-			}
-			return schemeArray.join("");
-		}
-
-		function isSolvable(s: string): boolean {
-			return true;
-		}
-
-		/*const randomScheme = getRandomScheme();
-		if (!isSolvable(randomScheme)) {
-			return randomizeScheme();
-		}
-
-		return getRandomScheme();*/
-		return `
-			----0
-			-----
-			--1--
-			0-213
-			3---2
-		`;
-	}
-
 	function getColor(index: number) {
-		const char = schemeSanitized.charAt(index);
+		const char = scheme.charAt(index);
 		return char === "-" ? undefined : (Number.parseInt(char) as ColorType);
 	}
 
 	const state: IBoardContext = {
+		progress,
+		setProgress,
 		largestColor,
 		rows,
 		gameState,
 		setGameState,
 	};
+
+	useEffect(() => {
+		if (progress === 100) {
+			setTimeout(() => props.onRestart(), 125);
+		}
+	}, [progress]);
 
 	return (
 		<BoardContext.Provider value={state}>
