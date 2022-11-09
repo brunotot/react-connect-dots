@@ -25,7 +25,9 @@ export default function Game(props: GameProps) {
 
 	useEffect(() => {
 		if (scheme.length === 0) {
-			getRandomBoardScheme(rows, colors!).then((scheme) => setScheme(scheme));
+			getRandomBoardScheme(rows, colors!).then((scheme: string) =>
+				setScheme(scheme)
+			);
 		}
 	}, [scheme]);
 
