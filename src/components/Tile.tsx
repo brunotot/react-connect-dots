@@ -9,6 +9,8 @@ export type TileProps = {
 	index: number;
 };
 
+let movingIndex: number | undefined = undefined;
+
 export default function Tile(props: TileProps) {
 	const state = useContext(BoardContext);
 	const index = props.index;
@@ -28,7 +30,9 @@ export default function Tile(props: TileProps) {
 	}
 
 	const onClickHold = (e: any) => {
-		e.preventDefault();
+		if (e.type !== "touchstart") {
+			e.preventDefault();
+		}
 		if (color !== undefined) {
 			updateGameState({ dragging: true, idxCurrent: index }, color);
 		}
@@ -40,13 +44,16 @@ export default function Tile(props: TileProps) {
 		}
 	};
 
-	const onMouseEnter = () => {
+	const onMouseEnter = (currentIndex?: number) => {
 		const draggingColorState = state.gameState.find(
 			(colorState) => colorState.dragging
 		);
 		if (draggingColorState) {
 			const draggingColorType = draggingColorState.color as ColorType;
-			updateGameState({ idxCurrent: index }, draggingColorType);
+			updateGameState(
+				{ idxCurrent: typeof currentIndex === "number" ? currentIndex : index },
+				draggingColorType
+			);
 		}
 	};
 
@@ -64,17 +71,44 @@ export default function Tile(props: TileProps) {
 		colorState.idxDrawingLinks.includes(index)
 	);
 
+	const onTouchStart = (e: any) => {
+		movingIndex = index;
+		onClickHold(e);
+	};
+
+	const onTouchEnd = () => {
+		movingIndex = undefined;
+		onClickStop();
+	};
+
+	const onTouchMove = (e: any) => {
+		const touch = e.touches[0];
+		const { clientX, clientY } = touch;
+		const elemInTouchPos = document.elementFromPoint(clientX, clientY);
+		const elemInTouchPosIndexString =
+			elemInTouchPos?.getAttribute("data-index");
+		if (typeof elemInTouchPosIndexString === "string") {
+			const elemInTouchPosIndex = parseInt(elemInTouchPosIndexString);
+			if (movingIndex !== elemInTouchPosIndex) {
+				movingIndex = elemInTouchPosIndex;
+				onMouseEnter(elemInTouchPosIndex);
+			}
+		}
+	};
+
 	return (
 		<div
-			onMouseEnter={onMouseEnter}
+			onMouseEnter={() => onMouseEnter()}
 			onMouseDown={onClickHold}
 			onMouseUp={onClickStop}
-			onTouchStart={onClickHold}
-			onTouchEnd={onClickStop}
+			onTouchMove={onTouchMove}
+			onTouchStart={onTouchStart}
+			onTouchEnd={onTouchEnd}
 			className={`${styles["tile"]} ${tileItemClass}`}
 			data-color={color}
 			data-populated={isPopulated ? "" : undefined}
 			data-current={isCurrent ? "" : undefined}
+			data-index={index}
 		></div>
 	);
 }

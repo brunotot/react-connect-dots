@@ -7,6 +7,11 @@
 	--clr-2: 173, 216, 230;
 	--clr-3: 255, 255, 0;
 	--clr-4: 255, 165, 0;
+	--clr-5: 128, 128, 0;
+	--clr-6: 0, 0, 128;
+	--clr-7: 255, 228, 196;
+	--clr-8: 138, 43, 226;
+	--clr-9: 233, 150, 122;
 }
 
 .tile {
@@ -65,4 +70,32 @@
 
 .tile[data-color="4"] {
 	--tile-clr: var(--clr-4);
+}
+
+.tile[data-color="4"] {
+	--tile-clr: var(--clr-4);
+}
+
+.tile[data-color="4"] {
+	--tile-clr: var(--clr-4);
+}
+
+.tile[data-color="5"] {
+	--tile-clr: var(--clr-5);
+}
+
+.tile[data-color="6"] {
+	--tile-clr: var(--clr-6);
+}
+
+.tile[data-color="7"] {
+	--tile-clr: var(--clr-7);
+}
+
+.tile[data-color="8"] {
+	--tile-clr: var(--clr-8);
+}
+
+.tile[data-color="9"] {
+	--tile-clr: var(--clr-9);
 }
