@@ -6,6 +6,8 @@
   --clr-border: cyan;
   --clr-board-bg: darkblue;
   --board-width: 50vh;
+  --board-width-max: 90vw;
+  --board-height-max: 80vh;
 }
 
 *,

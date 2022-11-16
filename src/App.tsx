@@ -1,7 +1,10 @@
 import Game from "./components/Game";
+import * as qs from "query-string";
 
 function App() {
-	return <Game rows={6} colors={5} />;
+	const queryParams = qs.parse(location.search);
+	const fullScreen = queryParams["fullscreen"] === "true";
+	return <Game rows={6} colors={5} fullScreen={fullScreen} />;
 }
 
 export default App;

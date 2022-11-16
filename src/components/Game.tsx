@@ -10,9 +10,11 @@ export type GameProps = {
 	rows: number;
 	colors?: number;
 	scheme?: string;
+	fullScreen?: boolean;
 };
 
 export default function Game(props: GameProps) {
+	const fullScreen = !!props.fullScreen;
 	const rows = props.rows;
 	const colors = props.colors;
 	const [loaderMessage, setLoaderMessage] = useState(LOADER_MESSAGE);
@@ -34,7 +36,12 @@ export default function Game(props: GameProps) {
 	return (
 		<>
 			{scheme.length > 0 && (
-				<Board rows={rows} scheme={scheme} onRestart={onRestart} />
+				<Board
+					rows={rows}
+					scheme={scheme}
+					onRestart={onRestart}
+					fullScreen={fullScreen}
+				/>
 			)}
 			{scheme.length === 0 && <Loader message={loaderMessage} />}
 		</>

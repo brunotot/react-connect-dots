@@ -1,5 +1,5 @@
 :root {
-	--circle-width: 75%;
+	--circle-width: 10cqh;
 	--line-height: 30%;
 	--line-opacity: 0.7;
 	--clr-0: 128, 0, 128;
@@ -15,6 +15,7 @@
 }
 
 .tile {
+	container-type: inline-size;
 	outline: 1px solid var(--clr-border);
 	display: grid;
 	place-items: center;
@@ -48,6 +49,7 @@
 	border-radius: 50%;
 	width: var(--circle-width);
 	aspect-ratio: 1 / 1;
+	max-width: 75cqw;
 	position: absolute;
 	background-color: currentColor;
 }

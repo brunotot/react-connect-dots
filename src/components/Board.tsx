@@ -8,6 +8,7 @@ export type BoardProps = {
 	onRestart: () => void;
 	rows: number;
 	scheme: string;
+	fullScreen: boolean;
 };
 
 export type DraggingColorType = {
@@ -230,7 +231,10 @@ export default function Board(props: BoardProps) {
 
 	return (
 		<BoardContext.Provider value={state}>
-			<div className={styles["board-container"]}>
+			<div
+				data-fullscreen={props.fullScreen}
+				className={styles["board-container"]}
+			>
 				<Statistics />
 				<div
 					onMouseLeave={onMouseLeave}
