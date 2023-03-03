@@ -1,39 +1,28 @@
 import styles from "./../assets/scss/Statistics.module.scss";
 import { useContext, useEffect, useState } from "react";
-import { BoardContext } from "./Board";
+import { GameContext } from "./Game";
 
 export default function Statistics() {
-	const { gameState, rows, largestColor, progress, setProgress } =
-		useContext(BoardContext);
-	const colorCount = largestColor + 1;
-	const tilesCount = Math.pow(rows, 2);
+	const { service, game } = useContext(GameContext);
+	const { progressPercentage, colorCount } = service;
 	const [flows, setFlows] = useState(0);
 
-	function calculateProgress(): number {
-		const filledCount = gameState.reduce(
-			(prev, curr) => prev + curr.idxDrawingLinks.length,
-			0
-		);
-		return Math.floor((filledCount / tilesCount) * 100);
-	}
-
 	function calculateFlows(): number {
-		return gameState.filter(({ idxDrawingLinks, idxEnd1, idxEnd2 }) => {
-			if (idxDrawingLinks.length < 2) {
+		return Object.values(game).filter(({ filled, position }) => {
+			if (filled.length < 2) {
 				return false;
 			}
-			const firstIdxDrawingLink = idxDrawingLinks[0];
-			const lastIdxDrawingLink = idxDrawingLinks[idxDrawingLinks.length - 1];
-			return firstIdxDrawingLink === idxEnd1
-				? lastIdxDrawingLink === idxEnd2
-				: lastIdxDrawingLink === idxEnd1;
+			const firstIdxDrawingLink = filled[0];
+			const lastIdxDrawingLink = filled[filled.length - 1];
+			return firstIdxDrawingLink === position.tail
+				? lastIdxDrawingLink === position.head
+				: lastIdxDrawingLink === position.tail;
 		}).length;
 	}
 
 	useEffect(() => {
 		setFlows(calculateFlows());
-		setProgress(calculateProgress());
-	}, gameState);
+	}, [game]);
 
 	return (
 		<div className={styles["stats"]}>
@@ -45,7 +34,7 @@ export default function Statistics() {
 			</div>
 			<div className={styles["stats-box"]}>
 				<span className={styles["white"]}>Pipe:</span>
-				<span className={styles["lightblue"]}>{progress}%</span>
+				<span className={styles["lightblue"]}>{progressPercentage}%</span>
 			</div>
 		</div>
 	);

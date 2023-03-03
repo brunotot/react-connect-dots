@@ -3,15 +3,21 @@
 	--line-height: 30%;
 	--line-opacity: 0.7;
 	--clr-0: 128, 0, 128;
-	--clr-1: 255, 0, 0;
-	--clr-2: 173, 216, 230;
+	--clr-1: 30, 144, 255;
+	--clr-2: 70, 130, 180;
 	--clr-3: 255, 255, 0;
 	--clr-4: 255, 165, 0;
 	--clr-5: 128, 128, 0;
-	--clr-6: 0, 0, 128;
+	--clr-6: 220, 20, 60;
 	--clr-7: 255, 228, 196;
 	--clr-8: 138, 43, 226;
 	--clr-9: 233, 150, 122;
+	--clr-10: 205, 92, 92;
+
+	--clr-11: 173, 216, 230;
+	--clr-12: 173, 216, 230;
+	--clr-13: 173, 216, 230;
+	--clr-14: 173, 216, 230;
 }
 
 .tile {
@@ -24,7 +30,8 @@
 	&[data-color]:hover {
 		cursor: pointer;
 		&::before {
-			border: 3px solid #000;
+			outline: 3px solid currentColor;
+			outline-offset: 2px;
 			z-index: 2;
 		}
 	}
@@ -37,8 +44,12 @@
 .tile[data-current]::before {
 	content: "";
 	border-radius: 50%;
-	border: 3px solid #000;
-	width: calc(var(--circle-width) / 2.5);
+	border: 1px solid #000;
+
+	outline: 3px solid currentColor;
+	outline-offset: 2px;
+
+	width: calc(var(--circle-width) / 5);
 	aspect-ratio: 1 / 1;
 	position: absolute;
 	background-color: currentColor;
@@ -74,14 +85,6 @@
 	--tile-clr: var(--clr-4);
 }
 
-.tile[data-color="4"] {
-	--tile-clr: var(--clr-4);
-}
-
-.tile[data-color="4"] {
-	--tile-clr: var(--clr-4);
-}
-
 .tile[data-color="5"] {
 	--tile-clr: var(--clr-5);
 }
@@ -100,4 +103,24 @@
 
 .tile[data-color="9"] {
 	--tile-clr: var(--clr-9);
+}
+
+.tile[data-color="`"] {
+	--tile-clr: var(--clr-10);
+}
+
+.tile[data-color="a"] {
+	--tile-clr: var(--clr-11);
+}
+
+.tile[data-color="b"] {
+	--tile-clr: var(--clr-12);
+}
+
+.tile[data-color="c"] {
+	--tile-clr: var(--clr-13);
+}
+
+.tile[data-color="d"] {
+	--tile-clr: var(--clr-14);
 }

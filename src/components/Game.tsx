@@ -1,49 +1,58 @@
 import { getRandomBoardScheme } from "../generator/BoardGenerator";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import Board from "./Board";
 import Loader from "./Loader";
-
-const LOADER_MESSAGE = "Loading game...";
-const LOADER_MESSAGE_NEW = "Loading new game...";
+import GameService, {
+	GameState,
+	loadGameService,
+} from "../service/GameService";
 
 export type GameProps = {
 	rows: number;
-	colors?: number;
+	colors: number;
 	scheme?: string;
 	fullScreen?: boolean;
 };
 
-export default function Game(props: GameProps) {
-	const fullScreen = !!props.fullScreen;
-	const rows = props.rows;
-	const colors = props.colors;
-	const [loaderMessage, setLoaderMessage] = useState(LOADER_MESSAGE);
-	const [scheme, setScheme] = useState(props.scheme ?? "");
+export type IGameContext = {
+	service: GameService;
+	game: GameState;
+};
 
-	const onRestart = () => {
-		setLoaderMessage(LOADER_MESSAGE_NEW);
-		setScheme("");
-	};
+export const GameContext: React.Context<IGameContext> = createContext(
+	{} as any
+);
+
+export default function Game({ rows, colors, scheme, fullScreen }: GameProps) {
+	const [game, setGame] = useState<GameState | undefined>(undefined);
+	const [restartFlag, setRestartFlag] = useState(false);
+	const [service, setService] = useState<GameService | undefined>(undefined);
 
 	useEffect(() => {
-		if (scheme.length === 0) {
-			getRandomBoardScheme(rows, colors!).then((scheme: string) =>
-				setScheme(scheme)
+		async function load() {
+			const loadedService = await loadGameService(
+				rows,
+				colors,
+				(state) => setGame(state),
+				scheme
 			);
+			setService(loadedService);
+			loadedService.triggerChange();
 		}
-	}, [scheme]);
+		setService(undefined);
+		load();
+	}, [rows, colors, scheme, restartFlag]);
+
+	if (!service || !game) {
+		return <Loader message={"Loading new game..."} />;
+	}
 
 	return (
-		<>
-			{scheme.length > 0 && (
-				<Board
-					rows={rows}
-					scheme={scheme}
-					onRestart={onRestart}
-					fullScreen={fullScreen}
-				/>
-			)}
-			{scheme.length === 0 && <Loader message={loaderMessage} />}
-		</>
+		<GameContext.Provider value={{ service: service!, game: game! }}>
+			<Board
+				onRestart={() => setRestartFlag((prev) => !prev)}
+				fullScreen={!!fullScreen}
+			/>
+		</GameContext.Provider>
 	);
 }
