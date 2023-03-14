@@ -5,6 +5,8 @@ const runScript = async (code) => {
 	const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.21.3/full/";
 	const pyodide = await loadPyodide({
 		indexURL: PYODIDE_URL,
+		stdout: () => {},
+		fullStdLib: false,
 	});
 
 	return await pyodide.runPythonAsync(code);
